@@ -12,6 +12,11 @@ import androidx.navigation.NavController
 import com.example.assessment2.components.BottomBackBar
 import android.widget.Toast
 
+import com.example.assessment2.database.FinanceDatabase
+import com.example.assessment2.model.Transaction
+import kotlinx.coroutines.launch
+import java.util.Calendar
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IncomeExpenseScreen(navController: NavController) {
@@ -20,6 +25,10 @@ fun IncomeExpenseScreen(navController: NavController) {
     var amount by remember { mutableStateOf("") }
     var reason by remember { mutableStateOf("") }
     val reasonLabel = if (type == "Income") "Source" else "Purpose"
+
+    val db = FinanceDatabase.getDatabase(context)
+    val dao = db.transactionDao()
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -76,9 +85,27 @@ fun IncomeExpenseScreen(navController: NavController) {
                     onClick = {
                         val value = amount.toDoubleOrNull()
                         if (value != null && value > 0) {
-                            val actionText = if (type == "Income") "Deposit" else "Spend"
+                            val calendar = Calendar.getInstance()
+                            val year = calendar.get(Calendar.YEAR)
+                            val month = calendar.get(Calendar.MONTH) + 1
+                            val day = calendar.get(Calendar.DAY_OF_MONTH)
                             val finalReason = if (reason.isNotBlank()) reason else "unknown"
-                            Toast.makeText(context, "$$value already ${actionText}，Reason is $finalReason", Toast.LENGTH_SHORT).show()
+
+                            val transaction = Transaction(
+                                year = year,
+                                month = month,
+                                day = day,
+                                type = type,
+                                amount = value,
+                                reason = finalReason
+                            )
+
+                            coroutineScope.launch {
+                                dao.insert(transaction)
+                            }
+
+                            val actionText = if (type == "Income") "Deposit" else "Spend"
+                            Toast.makeText(context, "\$$value already $actionText，Reason is $finalReason", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(context, "Please enter a valid amount", Toast.LENGTH_SHORT).show()
                         }

@@ -54,7 +54,7 @@ dependencies {
     // Kotlin协程支持
     implementation(libs.androidx.room.ktx)
     // 使用 KSP 替代 kapt
-//    ksp(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
 //    implementation(libs.androidx.datastore.preferences) // DataStore 依赖
     implementation ("androidx.datastore:datastore-preferences:1.1.4") // 或更高版本

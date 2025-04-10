@@ -10,9 +10,20 @@ import java.util.*
 
 class IncomeExpenseViewModel(private val dao: TransactionDao) : ViewModel() {
 
-    fun addTransaction(type: String, amount: Double) {
-        val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-        val transaction = Transaction(type = type, amount = amount, date = date)
+    fun addTransaction(type: String, amount: Double, reason: String = "unknown") {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val transaction = Transaction(
+            year = year,
+            month = month,
+            day = day,
+            type = type,
+            amount = amount,
+            reason = reason
+        )
 
         viewModelScope.launch {
             dao.insert(transaction)
