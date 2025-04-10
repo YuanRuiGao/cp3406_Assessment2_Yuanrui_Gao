@@ -20,11 +20,8 @@ fun SettingsScreen(navController: NavController) {
     val context = LocalContext.current
     val settings = remember { SettingsDataStore(context) }
 
-    val savedColor by settings.backgroundColor.collectAsState(initial = "White")
-    val savedFontSize by settings.fontSize.collectAsState(initial = "Medium")
-
-    var selectedColor by remember { mutableStateOf(savedColor) }
-    var selectedFontSize by remember { mutableStateOf(savedFontSize) }
+    val selectedColor by settings.backgroundColor.collectAsState(initial = "White")
+    val selectedFontSize by settings.fontSize.collectAsState(initial = "Medium")
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Settings") }) },
@@ -40,7 +37,6 @@ fun SettingsScreen(navController: NavController) {
                     options = listOf("White", "Gray", "Blue"),
                     selectedOption = selectedColor,
                     onOptionSelected = {
-                        selectedColor = it
                         CoroutineScope(Dispatchers.IO).launch {
                             settings.saveBackgroundColor(it)
                         }
@@ -54,7 +50,6 @@ fun SettingsScreen(navController: NavController) {
                     options = listOf("Small", "Medium", "Large"),
                     selectedOption = selectedFontSize,
                     onOptionSelected = {
-                        selectedFontSize = it
                         CoroutineScope(Dispatchers.IO).launch {
                             settings.saveFontSize(it)
                         }
