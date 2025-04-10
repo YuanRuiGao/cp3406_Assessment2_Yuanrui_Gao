@@ -1,12 +1,11 @@
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
+// 添加 kotlin-kapt 和 kotlin-ksp 插件
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+//    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-//    id("com.android.application") // 修复此处
-//    id("kotlin-android") // 修复此处
-//    id("kotlin-kapt") // 修复此处
+    alias(libs.plugins.kotlin.ksp) // 添加 ksp 插件
 }
 
 android {
@@ -42,19 +41,24 @@ android {
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.10" // 确保版本与 Compose 兼容
+    }
 }
 
 dependencies {
-
     val room_version = "2.6.1" // 使用最新稳定版本
 
     // Room核心库
     implementation(libs.androidx.room.runtime)
     // Kotlin协程支持
     implementation(libs.androidx.room.ktx)
-    // 注解处理器
-//    kapt("androidx.room:room-compiler:$room_version")
+    // 使用 KSP 替代 kapt
+//    ksp(libs.androidx.room.compiler)
 
+//    implementation(libs.androidx.datastore.preferences) // DataStore 依赖
+    implementation ("androidx.datastore:datastore-preferences:1.1.4") // 或更高版本
+    // 其他依赖
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

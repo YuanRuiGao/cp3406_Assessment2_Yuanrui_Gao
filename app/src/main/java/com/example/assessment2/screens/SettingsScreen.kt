@@ -4,38 +4,63 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.assessment2.components.BottomBackBar
+import com.example.assessment2.components.DropdownMenuSetting
+import com.example.assessment2.datastore.SettingsDataStore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(navController: NavController) {
+    val context = LocalContext.current
+    val settings = remember { SettingsDataStore(context) }
+
+    val savedColor by settings.backgroundColor.collectAsState(initial = "White")
+    val savedFontSize by settings.fontSize.collectAsState(initial = "Medium")
+
+    var selectedColor by remember { mutableStateOf(savedColor) }
+    var selectedFontSize by remember { mutableStateOf(savedFontSize) }
+
     Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("Settings") })
-        },
+        topBar = { TopAppBar(title = { Text("Settings") }) },
         bottomBar = { BottomBackBar(navController) },
         content = { padding ->
-            Column(modifier = Modifier
-                .padding(padding)
-                .padding(16.dp)) {
+            Column(
+                modifier = Modifier
+                    .padding(padding)
+                    .padding(16.dp)
+            ) {
+                Text("Background Color")
+                DropdownMenuSetting(
+                    options = listOf("White", "Gray", "Blue"),
+                    selectedOption = selectedColor,
+                    onOptionSelected = {
+                        selectedColor = it
+                        CoroutineScope(Dispatchers.IO).launch {
+                            settings.saveBackgroundColor(it)
+                        }
+                    }
+                )
 
-                Text("Settings will go here.")
+                Spacer(modifier = Modifier.height(24.dp))
 
-                // 示例设置项
-                Row(modifier = Modifier.padding(vertical = 8.dp)) {
-                    Text("Currency:")
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Text("USD")
-                }
-
-                Row(modifier = Modifier.padding(vertical = 8.dp)) {
-                    Text("Night mode:")
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Text("Off")
-                }
+                Text("Font Size")
+                DropdownMenuSetting(
+                    options = listOf("Small", "Medium", "Large"),
+                    selectedOption = selectedFontSize,
+                    onOptionSelected = {
+                        selectedFontSize = it
+                        CoroutineScope(Dispatchers.IO).launch {
+                            settings.saveFontSize(it)
+                        }
+                    }
+                )
             }
-        },
+        }
     )
 }
