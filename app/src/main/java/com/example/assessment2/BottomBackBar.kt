@@ -8,8 +8,14 @@ import androidx.navigation.NavController
 @Composable
 fun BottomBackBar(navController: NavController) {
     BottomAppBar {
-        Button(onClick = { navController.popBackStack() }) {
-            Text("Back",style = MaterialTheme.typography.bodyLarge)
+        Button(onClick = {
+            navController.navigate("home") {
+                popUpTo("home") { inclusive = true }
+                launchSingleTop = true
+            }
+        }) {
+            Text("Back", style = MaterialTheme.typography.bodyLarge)
         }
     }
 }
+
