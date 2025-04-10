@@ -20,12 +20,12 @@ fun SuggestionsScreen(navController: NavController) {
     )
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Saving Suggestions") }) },
+        topBar = { TopAppBar(title = { Text("Saving Suggestions",style = MaterialTheme.typography.bodyLarge) }) },
         content = { paddingValues: PaddingValues ->
             Column(modifier = Modifier.padding(paddingValues)) { // 使用 Modifier.padding 应用 paddingValues
-                Text("Here are some ways to save:")
+                Text("Here are some ways to save:",style = MaterialTheme.typography.bodyLarge)
                 suggestions.forEach { suggestion ->
-                    Text("• $suggestion")
+                    Text("• $suggestion",style = MaterialTheme.typography.bodyLarge)
                 }
             }
         },

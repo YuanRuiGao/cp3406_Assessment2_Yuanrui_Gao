@@ -9,7 +9,7 @@ import androidx.navigation.NavController
 fun BottomBackBar(navController: NavController) {
     BottomAppBar {
         Button(onClick = { navController.popBackStack() }) {
-            Text("Back")
+            Text("Back",style = MaterialTheme.typography.bodyLarge)
         }
     }
 }

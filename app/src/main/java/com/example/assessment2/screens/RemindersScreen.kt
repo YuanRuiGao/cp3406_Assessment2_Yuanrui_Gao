@@ -18,7 +18,7 @@ fun RemindersScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Bill Reminders") },
+                title = { Text("Bill Reminders",style = MaterialTheme.typography.bodyLarge) },
                 modifier = Modifier.fillMaxWidth() // 确保标题占满宽度
             )
         },
@@ -32,14 +32,14 @@ fun RemindersScreen(navController: NavController) {
                 OutlinedTextField(
                     value = reminderName,
                     onValueChange = { reminderName = it },
-                    label = { Text("Bill Name") },
+                    label = { Text("Bill Name",style = MaterialTheme.typography.bodyLarge) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = reminderDate,
                     onValueChange = { reminderDate = it },
-                    label = { Text("Due Date") },
+                    label = { Text("Due Date",style = MaterialTheme.typography.bodyLarge) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -55,7 +55,7 @@ fun RemindersScreen(navController: NavController) {
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Add Reminder")
+                    Text("Add Reminder",style = MaterialTheme.typography.bodyLarge)
                 }
             }
         },

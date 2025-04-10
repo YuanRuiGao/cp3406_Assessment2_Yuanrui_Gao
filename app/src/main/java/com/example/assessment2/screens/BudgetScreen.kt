@@ -15,18 +15,18 @@ fun BudgetScreen(navController: NavController) {
     var budget by remember { mutableStateOf("") }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Monthly Budget") }) },
+        topBar = { TopAppBar(title = { Text("Monthly Budget",style = MaterialTheme.typography.bodyLarge) }) },
         content = { innerPadding ->
             Column(modifier = Modifier.padding(innerPadding)) { // 应用 innerPadding
                 OutlinedTextField(
                     value = budget,
                     onValueChange = { budget = it },
-                    label = { Text("Set Monthly Budget") }
+                    label = { Text("Set Monthly Budget",style = MaterialTheme.typography.bodyLarge) }
                 )
                 Button(onClick = {
                     // Save budget
                 }) {
-                    Text("Save")
+                    Text("Save",style = MaterialTheme.typography.bodyLarge)
                 }
             }
         },

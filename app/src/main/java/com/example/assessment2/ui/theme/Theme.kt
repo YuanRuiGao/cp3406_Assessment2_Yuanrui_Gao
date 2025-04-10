@@ -21,9 +21,24 @@ fun FinanceAppTheme(
     val fontSizeSetting by settings.fontSize.collectAsState(initial = "Medium")
 
     val colors = when (backgroundColor) {
-        "Gray" -> lightColorScheme(surface = Color(0xFFF5F5F5))
-        "Blue" -> lightColorScheme(surface = Color(0xFFE3F2FD))
-        else -> lightColorScheme(surface = Color.White)
+        "Gray" -> lightColorScheme(
+            primary = Color(0xFF757575),            // 按钮灰色
+            onPrimary = Color.White,
+            background = Color(0xFFF5F5F5),
+            onBackground = Color.Black
+        )
+        "Blue" -> lightColorScheme(
+            primary = Color(0xFF2196F3),            // 按钮蓝色
+            onPrimary = Color.White,
+            background = Color(0xFFE3F2FD),
+            onBackground = Color.Black
+        )
+        else -> lightColorScheme(
+            primary = Color(0xFF6200EE),            // 按钮紫色
+            onPrimary = Color.White,
+            background = Color.White,
+            onBackground = Color.Black
+        )
     }
 
     // 动态调整字体大小

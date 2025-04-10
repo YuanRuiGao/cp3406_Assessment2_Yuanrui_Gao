@@ -15,23 +15,23 @@ fun GoalsScreen(navController: NavController) {
     var goalAmount by remember { mutableStateOf("") }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Savings Goals") }) },
+        topBar = { TopAppBar(title = { Text("Savings Goals",style = MaterialTheme.typography.bodyLarge) }) },
         content = { paddingValues ->
             Column(modifier = Modifier.padding(paddingValues)) {
                 OutlinedTextField(
                     value = goalName,
                     onValueChange = { goalName = it },
-                    label = { Text("Goal Name") }
+                    label = { Text("Goal Name",style = MaterialTheme.typography.bodyLarge) }
                 )
                 OutlinedTextField(
                     value = goalAmount,
                     onValueChange = { goalAmount = it },
-                    label = { Text("Goal Amount") }
+                    label = { Text("Goal Amount",style = MaterialTheme.typography.bodyLarge) }
                 )
                 Button(onClick = {
                     // Save goal
                 }) {
-                    Text("Add Goal")
+                    Text("Add Goal",style = MaterialTheme.typography.bodyLarge)
                 }
             }
         },

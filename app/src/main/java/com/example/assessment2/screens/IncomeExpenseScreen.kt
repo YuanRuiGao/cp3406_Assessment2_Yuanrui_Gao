@@ -19,7 +19,7 @@ fun IncomeExpenseScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Track Income & Expenses") },
+                title = { Text("Track Income & Expenses",style = MaterialTheme.typography.bodyLarge) },
                 modifier = Modifier.fillMaxWidth()
             )
         },
@@ -44,18 +44,18 @@ fun IncomeExpenseScreen(navController: NavController) {
                         onClick = { type = "Income" },
                         modifier = Modifier.padding(end = 8.dp)
                     )
-                    Text("Income")
+                    Text("Income",style = MaterialTheme.typography.bodyLarge)
                     RadioButton(
                         selected = type == "Expense",
                         onClick = { type = "Expense" },
                         modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                     )
-                    Text("Expense")
+                    Text("Expense",style = MaterialTheme.typography.bodyLarge)
                 }
                 OutlinedTextField(
                     value = amount,
                     onValueChange = { amount = it },
-                    label = { Text("Amount") },
+                    label = { Text("Amount",style = MaterialTheme.typography.bodyLarge) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp)
@@ -66,7 +66,7 @@ fun IncomeExpenseScreen(navController: NavController) {
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Add $type")
+                    Text("Add $type",style = MaterialTheme.typography.bodyLarge)
                 }
             }
         },

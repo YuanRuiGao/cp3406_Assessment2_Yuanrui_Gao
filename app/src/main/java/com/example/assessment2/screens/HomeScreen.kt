@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.text.font.FontWeight
@@ -17,10 +16,11 @@ fun HomeScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Finance Dashboard") },
+                title = { Text("Finance Dashboard", style = MaterialTheme.typography.bodyLarge) },
                 colors = TopAppBarDefaults.smallTopAppBarColors()
             )
         },
+        containerColor = MaterialTheme.colorScheme.background,
         content = { paddingValues ->
             Column(
                 modifier = Modifier
@@ -29,22 +29,24 @@ fun HomeScreen(navController: NavController) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Text("Welcome!", style = MaterialTheme.typography.bodyLarge)
+
                 val buttonModifier = Modifier
                     .padding(12.dp)
-                    .size(120.dp)
+                    .size(130.dp)
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Row {
-                        HomeButton("Income and Expenses", navController, "income_expense", buttonModifier)
-                        HomeButton("Monthly Budget", navController, "budget", buttonModifier)
+                        HomeButton("Track", navController, "income_expense", buttonModifier)
+                        HomeButton("Budget", navController, "budget", buttonModifier)
                     }
                     Row {
-                        HomeButton("Manage Goals", navController, "goals", buttonModifier)
-                        HomeButton("Bill Reminder", navController, "reminders", buttonModifier)
+                        HomeButton("Goals", navController, "goals", buttonModifier)
+                        HomeButton("Remind", navController, "reminders", buttonModifier)
                     }
                     Row {
                         HomeButton("Suggest", navController, "suggestions", buttonModifier)
-                        HomeButton("Settings", navController, "settings", buttonModifier)
+                        HomeButton("Setting", navController, "settings", buttonModifier)
                     }
                 }
             }
@@ -57,12 +59,14 @@ fun HomeButton(label: String, navController: NavController, route: String, modif
     Button(
         onClick = { navController.navigate(route) },
         modifier = modifier,
-        shape = RoundedCornerShape(20.dp)
+        shape = RoundedCornerShape(20.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary)
     ) {
         Text(
             text = label,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.bodyLarge
         )
     }
 }
