@@ -1,5 +1,7 @@
+
 package com.example.assessment2.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -10,12 +12,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.assessment2.components.BottomBackBar
-import android.widget.Toast
-
 import com.example.assessment2.database.FinanceDatabase
 import com.example.assessment2.model.Transaction
 import kotlinx.coroutines.launch
-import java.util.Calendar
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,12 +90,13 @@ fun IncomeExpenseScreen(navController: NavController) {
                             val month = calendar.get(Calendar.MONTH) + 1
                             val day = calendar.get(Calendar.DAY_OF_MONTH)
                             val finalReason = if (reason.isNotBlank()) reason else "unknown"
+                            val normalizedType = type.trim().replaceFirstChar { it.uppercase() }
 
                             val transaction = Transaction(
                                 year = year,
                                 month = month,
                                 day = day,
-                                type = type,
+                                type = normalizedType,
                                 amount = value,
                                 reason = finalReason
                             )
@@ -104,7 +105,7 @@ fun IncomeExpenseScreen(navController: NavController) {
                                 dao.insert(transaction)
                             }
 
-                            val actionText = if (type == "Income") "Deposit" else "Spend"
+                            val actionText = if (normalizedType == "Income") "Deposit" else "Spend"
                             Toast.makeText(context, "\$$value already $actionText，Reason is $finalReason", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(context, "Please enter a valid amount", Toast.LENGTH_SHORT).show()
