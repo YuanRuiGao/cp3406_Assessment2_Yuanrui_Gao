@@ -1,3 +1,4 @@
+
 package com.example.assessment2.database
 
 import android.content.Context
@@ -6,11 +7,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.assessment2.model.Transaction
 import com.example.assessment2.model.Goal
+import com.example.assessment2.model.Reminder
 
-@Database(entities = [Transaction::class, Goal::class], version = 3)
+@Database(entities = [Transaction::class, Goal::class, Reminder::class], version = 4)
 abstract class FinanceDatabase : RoomDatabase() {
     abstract fun transactionDao(): TransactionDao
     abstract fun goalDao(): GoalDao
+    abstract fun reminderDao(): ReminderDao
 
     companion object {
         @Volatile private var INSTANCE: FinanceDatabase? = null
@@ -25,7 +28,7 @@ abstract class FinanceDatabase : RoomDatabase() {
                     .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
-                instance
+                return instance
             }
         }
     }
