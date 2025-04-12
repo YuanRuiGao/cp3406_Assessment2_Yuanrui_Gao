@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.assessment2.components.BottomBackBar
 import com.example.assessment2.database.FinanceDatabase
@@ -17,6 +19,7 @@ import com.example.assessment2.model.Transaction
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import com.example.assessment2.viewmodel.incomeexpense.IncomeExpenseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,9 +30,8 @@ fun IncomeExpenseScreen(navController: NavController) {
     var reason by remember { mutableStateOf("") }
     val reasonLabel = if (type == "Income") "Source" else "Purpose"
 
-    val db = FinanceDatabase.getDatabase(context)
-    val dao = db.transactionDao()
-    val coroutineScope = rememberCoroutineScope()
+    val viewModel: IncomeExpenseViewModel = hiltViewModel()
+
 
     Scaffold(
         topBar = {
@@ -86,27 +88,16 @@ fun IncomeExpenseScreen(navController: NavController) {
                     onClick = {
                         val value = amount.toDoubleOrNull()
                         if (value != null && value > 0) {
-                            val calendar = Calendar.getInstance()
-                            val year = calendar.get(Calendar.YEAR)
-                            val month = calendar.get(Calendar.MONTH) + 1
-                            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
                             val finalReason = if (reason.isNotBlank()) reason else "unknown"
                             val normalizedType = type.trim().replaceFirstChar { it.uppercase() }
-                            val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 
-                            val transaction = Transaction(
-                                year = year,
-                                month = month,
-                                day = day,
+
+                            viewModel.addTransaction(
                                 type = normalizedType,
                                 amount = value,
-                                reason = finalReason,
-                                date = date
+                                reason = finalReason
                             )
-
-                            coroutineScope.launch {
-                                dao.insert(transaction)
-                            }
 
                             val actionText = if (normalizedType == "Income") "Deposit" else "Spend"
                             Toast.makeText(context, "\$$value already $actionText，Reason is $finalReason", Toast.LENGTH_SHORT).show()

@@ -6,6 +6,9 @@ plugins {
 //    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.ksp) // 添加 ksp 插件
+    alias(libs.plugins.hilt.android)
+    kotlin("kapt")
+
 }
 
 android {
@@ -53,6 +56,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     // Kotlin协程支持
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.espresso.core)
     // 使用 KSP 替代 kapt
     ksp(libs.androidx.room.compiler)
 
@@ -63,8 +67,11 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
-//    implementation(libs.retrofit2)
-//    implementation(libs.gson.converter)
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
+    kapt(libs.hilt.compiler)
+
     // 其他依赖
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
