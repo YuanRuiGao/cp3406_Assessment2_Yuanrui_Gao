@@ -23,7 +23,7 @@ class SuggestViewModel @Inject constructor() : ViewModel() {
     private fun fetchExchangeRates() {
         viewModelScope.launch {
             try {
-                val response = RetrofitClient.api.getRates("你的API Key")
+                val response = RetrofitClient.api.getRates("66cdce41931dadb6a4f436b24826da82")
                 val quotes = response.quotes
                 if (quotes?.containsKey("USDAUD") == true) {
                     val rate = quotes["USDAUD"]!!

@@ -17,12 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.assessment2.components.BottomBackBar
-import com.example.assessment2.database.FinanceDatabase
-import com.example.assessment2.model.Goal
-import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.text.SimpleDateFormat
-import java.util.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.assessment2.viewmodel.GoalsViewModel
 

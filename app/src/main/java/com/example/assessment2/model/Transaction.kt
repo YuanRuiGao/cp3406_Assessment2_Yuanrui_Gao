@@ -2,7 +2,7 @@ package com.example.assessment2.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.text.SimpleDateFormat // ✅ 使用标准 Java 的格式化类
+import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 

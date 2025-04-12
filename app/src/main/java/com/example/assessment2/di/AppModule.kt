@@ -6,6 +6,7 @@ import com.example.assessment2.database.FinanceDatabase
 import com.example.assessment2.database.GoalDao
 import com.example.assessment2.database.ReminderDao
 import com.example.assessment2.database.TransactionDao
+import com.example.assessment2.datastore.SettingsDataStore
 import com.example.assessment2.repository.GoalRepository
 import dagger.Module
 import dagger.Provides
@@ -13,7 +14,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
-import kotlin.text.Typography.dagger
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -39,6 +39,11 @@ object AppModule {
 
     @Provides
     fun provideReminderDao(db: FinanceDatabase): ReminderDao = db.reminderDao()
+
+    @Provides
+    fun provideSettingsDataStore(@ApplicationContext context: Context): SettingsDataStore {
+        return SettingsDataStore(context)
+    }
 
     @Provides
     fun provideGoalRepository(

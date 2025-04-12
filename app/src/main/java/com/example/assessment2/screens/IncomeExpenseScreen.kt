@@ -11,14 +11,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.assessment2.components.BottomBackBar
-import com.example.assessment2.database.FinanceDatabase
-import com.example.assessment2.model.Transaction
-import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 import com.example.assessment2.viewmodel.incomeexpense.IncomeExpenseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

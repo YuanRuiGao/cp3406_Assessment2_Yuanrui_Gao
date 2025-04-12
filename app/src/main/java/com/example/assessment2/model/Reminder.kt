@@ -2,7 +2,6 @@ package com.example.assessment2.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.LocalDate
 
 @Entity(tableName = "reminders")
 data class Reminder(

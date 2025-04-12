@@ -6,12 +6,12 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.map
 
 // 使用 preferencesDataStore 扩展函数创建 DataStore 实例
-val Context.settingsDataStore by preferencesDataStore(name = "app_settings") // 确保 name 参数为 String 类型
+val Context.settingsDataStore by preferencesDataStore(name = "app_settings")
 
 // 定义存储键的常量对象
 object SettingsKeys {
-    val BACKGROUND_COLOR = stringPreferencesKey("background_color") // 背景颜色键
-    val FONT_SIZE = stringPreferencesKey("font_size") // 字体大小键
+    val BACKGROUND_COLOR = stringPreferencesKey("background_color")
+    val FONT_SIZE = stringPreferencesKey("font_size")
 }
 
 // 数据存储类

@@ -43,8 +43,8 @@ fun FinanceAppTheme(
 
     // 动态调整字体大小
     val fontScale = when (fontSizeSetting) {
-        "Small" -> 12.sp
-        "Large" -> 20.sp
+        "Small" -> 14.sp
+        "Large" -> 21.sp
         else -> 16.sp
     }
 

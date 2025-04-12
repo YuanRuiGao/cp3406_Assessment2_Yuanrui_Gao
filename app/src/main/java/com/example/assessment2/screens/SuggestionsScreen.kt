@@ -1,6 +1,5 @@
 package com.example.assessment2.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
@@ -9,8 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.assessment2.components.BottomBackBar
-import com.example.assessment2.api.RetrofitClient
-import kotlinx.coroutines.launch
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.assessment2.viewmodel.suggest.SuggestViewModel
 
@@ -22,27 +19,8 @@ fun SuggestScreen(navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
 
     val viewModel: SuggestViewModel = hiltViewModel()
-    var exchangeInfo by remember { mutableStateOf<List<String>>(listOf("Loading...")) }
+    val exchangeInfo by viewModel.exchangeInfo.collectAsState()
 
-    // 加载汇率数据
-    LaunchedEffect(true) {
-        coroutineScope.launch {
-            try {
-                val response = RetrofitClient.api.getRates("66cdce41931dadb6a4f436b24826da82")
-                val quotes = response.quotes
-                if (quotes != null && quotes.containsKey("USDAUD")) {
-                    val rate = quotes["USDAUD"] ?: 0.0
-                    exchangeInfo = listOf("USD → AUD: $rate", "Tip: Good time to exchange.")
-                } else {
-                    Log.e("API_ERROR", "Quotes is null or missing USDAUD")
-                    exchangeInfo = listOf("Exchange rate data unavailable.")
-                }
-            } catch (e: Exception) {
-                Log.e("API_ERROR", "Exception: ${e.message}", e)
-                exchangeInfo = listOf("Failed to load exchange rate.")
-            }
-        }
-    }
 
     Scaffold(
         topBar = {
