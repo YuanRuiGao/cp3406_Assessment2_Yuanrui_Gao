@@ -135,8 +135,21 @@ fun BudgetScreen(navController: NavController) {
                 ViewMode.Table -> {
                     LazyColumn {
                         items(filteredTransactions) { tx ->
-                            val date = "${tx.year}-${tx.month.toString().padStart(2, '0')}-${tx.day.toString().padStart(2, '0')}"
-                            Text("• $date | ${tx.type} | \$${tx.amount} | ${tx.reason}")
+                            val date = "%04d-%02d-%02d".format(tx.year, tx.month, tx.day)
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp),
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                                shape = MaterialTheme.shapes.medium
+                            ) {
+                                Column(modifier = Modifier.padding(16.dp)) {
+                                    Text("Date: $date", style = MaterialTheme.typography.bodyMedium)
+                                    Text("Type: ${tx.type}", style = MaterialTheme.typography.bodyMedium)
+                                    Text("Amount: \$${tx.amount}", style = MaterialTheme.typography.bodyMedium)
+                                    Text("Reason: ${tx.reason}", style = MaterialTheme.typography.bodyMedium)
+                                }
+                            }
                         }
                     }
                 }
