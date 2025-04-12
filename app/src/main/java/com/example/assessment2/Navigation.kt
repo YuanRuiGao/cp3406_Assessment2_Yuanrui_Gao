@@ -16,7 +16,7 @@ fun FinanceNavGraph(navController: NavHostController) {
         composable("budget") { BudgetScreen(navController) }
         composable("goals") { GoalsScreen(navController) }
         composable("reminders") { RemindersScreen(navController) }
-        composable("suggestions") { SuggestionsScreen(navController) }
+        composable("suggest") { SuggestScreen(navController) }
         composable("settings") { SettingsScreen(navController) }
     }
 }

@@ -45,7 +45,7 @@ fun HomeScreen(navController: NavController) {
                         HomeButton("Remind", navController, "reminders", buttonModifier)
                     }
                     Row {
-                        HomeButton("Suggest", navController, "suggestions", buttonModifier)
+                        HomeButton("Suggest", navController, "suggest", buttonModifier)
                         HomeButton("Setting", navController, "settings", buttonModifier)
                     }
                 }
