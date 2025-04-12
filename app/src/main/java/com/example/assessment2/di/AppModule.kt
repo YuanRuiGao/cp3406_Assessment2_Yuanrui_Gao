@@ -1,6 +1,7 @@
 package com.example.assessment2.di
 
 import android.content.Context
+import androidx.room.Room
 import com.example.assessment2.database.FinanceDatabase
 import com.example.assessment2.database.GoalDao
 import com.example.assessment2.database.ReminderDao
@@ -21,7 +22,13 @@ object AppModule {
     @Provides
     @Singleton
     fun provideFinanceDatabase(@ApplicationContext context: Context): FinanceDatabase {
-        return FinanceDatabase.getDatabase(context)
+        return Room.databaseBuilder(
+            context,
+            FinanceDatabase::class.java,
+            "finance_database"
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides
@@ -29,8 +36,10 @@ object AppModule {
 
     @Provides
     fun provideTransactionDao(db: FinanceDatabase): TransactionDao = db.transactionDao()
+
     @Provides
     fun provideReminderDao(db: FinanceDatabase): ReminderDao = db.reminderDao()
+
     @Provides
     fun provideGoalRepository(
         goalDao: GoalDao,

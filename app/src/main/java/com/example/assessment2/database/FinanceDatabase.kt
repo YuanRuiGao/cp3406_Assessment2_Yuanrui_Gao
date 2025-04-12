@@ -9,7 +9,7 @@ import com.example.assessment2.model.Transaction
 import com.example.assessment2.model.Goal
 import com.example.assessment2.model.Reminder
 
-@Database(entities = [Transaction::class, Goal::class, Reminder::class], version = 5)
+@Database(entities = [Transaction::class, Goal::class, Reminder::class], version = 7,exportSchema = false)
 abstract class FinanceDatabase : RoomDatabase() {
     abstract fun transactionDao(): TransactionDao
     abstract fun goalDao(): GoalDao

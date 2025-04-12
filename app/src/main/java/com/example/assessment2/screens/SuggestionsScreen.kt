@@ -11,12 +11,17 @@ import androidx.navigation.NavController
 import com.example.assessment2.components.BottomBackBar
 import com.example.assessment2.api.RetrofitClient
 import kotlinx.coroutines.launch
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.assessment2.viewmodel.suggest.SuggestViewModel
+
+
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun SuggestScreen(navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
 
+    val viewModel: SuggestViewModel = hiltViewModel()
     var exchangeInfo by remember { mutableStateOf<List<String>>(listOf("Loading...")) }
 
     // 加载汇率数据
