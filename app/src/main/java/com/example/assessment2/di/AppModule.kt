@@ -3,6 +3,7 @@ package com.example.assessment2.di
 import android.content.Context
 import com.example.assessment2.database.FinanceDatabase
 import com.example.assessment2.database.GoalDao
+import com.example.assessment2.database.ReminderDao
 import com.example.assessment2.database.TransactionDao
 import com.example.assessment2.repository.GoalRepository
 import dagger.Module
@@ -28,7 +29,8 @@ object AppModule {
 
     @Provides
     fun provideTransactionDao(db: FinanceDatabase): TransactionDao = db.transactionDao()
-
+    @Provides
+    fun provideReminderDao(db: FinanceDatabase): ReminderDao = db.reminderDao()
     @Provides
     fun provideGoalRepository(
         goalDao: GoalDao,

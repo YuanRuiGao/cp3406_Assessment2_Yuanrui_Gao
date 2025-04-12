@@ -26,30 +26,27 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.assessment2.viewmodel.reminder.ReminderViewModel
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RemindersScreen(navController: NavController) {
     val context = LocalContext.current
-    val db = FinanceDatabase.getDatabase(context)
-    val dao = db.reminderDao()
-    val coroutineScope = rememberCoroutineScope()
+    val viewModel: ReminderViewModel = hiltViewModel()
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     var reminderName by remember { mutableStateOf("") }
     var selectedDate by remember { mutableStateOf(LocalDate.now()) }
     var frequency by remember { mutableStateOf("Weekly") }
-    val reminders by dao.getAllReminders().collectAsState(initial = emptyList())
+    val reminders by viewModel.allReminders.collectAsState()
 
     val datePickerDialog = DatePickerDialog(
         context,
-        { _, year, month, day ->
-            selectedDate = LocalDate.of(year, month + 1, day)
-        },
-        selectedDate.year,
-        selectedDate.monthValue - 1,
-        selectedDate.dayOfMonth
+        { _, year, month, day -> selectedDate = LocalDate.of(year, month + 1, day) },
+        selectedDate.year, selectedDate.monthValue - 1, selectedDate.dayOfMonth
     )
 
     val today = LocalDate.now()
@@ -68,21 +65,15 @@ fun RemindersScreen(navController: NavController) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Bill Reminders", style = MaterialTheme.typography.bodyLarge) },
-                modifier = Modifier.fillMaxWidth()
-            )
+            TopAppBar(title = { Text("Bill Reminders", style = MaterialTheme.typography.bodyLarge) })
         },
         bottomBar = { BottomBackBar(navController) }
     ) { padding ->
-        Column(modifier = Modifier
-            .padding(padding)
-            .padding(16.dp)) {
-
+        Column(modifier = Modifier.padding(padding).padding(16.dp)) {
             OutlinedTextField(
                 value = reminderName,
                 onValueChange = { reminderName = it },
-                label = { Text("Bill Name", style = MaterialTheme.typography.bodyLarge) },
+                label = { Text("Bill Name") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -102,7 +93,7 @@ fun RemindersScreen(navController: NavController) {
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-            Text(displayText, style = MaterialTheme.typography.bodyLarge)
+            Text(displayText)
 
             Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = {
@@ -112,9 +103,7 @@ fun RemindersScreen(navController: NavController) {
                         date = selectedDate.toString(),
                         frequency = frequency
                     )
-                    coroutineScope.launch {
-                        dao.insert(reminder)
-                    }
+                    viewModel.insertReminder(reminder)
                     reminderName = ""
                 }
             }) {
@@ -142,9 +131,7 @@ fun RemindersScreen(navController: NavController) {
                                 Text("Frequency: ${reminder.frequency}")
                             }
                             IconButton(onClick = {
-                                coroutineScope.launch {
-                                    dao.delete(reminder)
-                                }
+                                viewModel.deleteReminder(reminder)
                             }) {
                                 Text("✕", color = Color.Red, fontSize = 20.sp)
                             }
