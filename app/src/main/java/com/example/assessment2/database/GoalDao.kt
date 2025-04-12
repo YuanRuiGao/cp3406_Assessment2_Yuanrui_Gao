@@ -16,4 +16,5 @@ interface GoalDao {
 
     @Delete
     suspend fun deleteGoal(goal: Goal)
+
 }

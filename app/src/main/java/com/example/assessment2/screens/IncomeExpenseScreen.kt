@@ -15,6 +15,7 @@ import com.example.assessment2.components.BottomBackBar
 import com.example.assessment2.database.FinanceDatabase
 import com.example.assessment2.model.Transaction
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,6 +92,7 @@ fun IncomeExpenseScreen(navController: NavController) {
                             val day = calendar.get(Calendar.DAY_OF_MONTH)
                             val finalReason = if (reason.isNotBlank()) reason else "unknown"
                             val normalizedType = type.trim().replaceFirstChar { it.uppercase() }
+                            val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 
                             val transaction = Transaction(
                                 year = year,
@@ -98,7 +100,8 @@ fun IncomeExpenseScreen(navController: NavController) {
                                 day = day,
                                 type = normalizedType,
                                 amount = value,
-                                reason = finalReason
+                                reason = finalReason,
+                                date = date
                             )
 
                             coroutineScope.launch {
