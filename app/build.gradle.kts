@@ -60,7 +60,9 @@ dependencies {
     // 使用 KSP 替代 kapt
     ksp(libs.androidx.room.compiler)
 
-//    implementation(libs.androidx.datastore.preferences) // DataStore 依赖
+    // Kotlin 测试库
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+
     implementation ("androidx.datastore:datastore-preferences:1.1.4") // 或更高版本
 
     //KPI依赖
@@ -74,7 +76,7 @@ dependencies {
 
     //测试依赖
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("io.mockk:mockk:1.13.5")
 
     // ✅ Mockito 核心

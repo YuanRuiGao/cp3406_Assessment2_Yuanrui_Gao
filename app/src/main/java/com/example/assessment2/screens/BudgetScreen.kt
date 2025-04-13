@@ -13,39 +13,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.assessment2.components.BottomBackBar
 import com.example.assessment2.database.FinanceDatabase
 import com.example.assessment2.datastore.BudgetDataStore
+import com.example.assessment2.viewmodel.budget.BudgetViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+
 
 enum class ViewMode { Pie, Bar, Table }
 
 @RequiresApi(Build.VERSION_CODES.O)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BudgetScreen(navController: NavController) {
-    val context = LocalContext.current
-    val db = FinanceDatabase.getDatabase(context)
-    val dao = db.transactionDao()
+fun BudgetScreen(navController: NavController, viewModel: BudgetViewModel = hiltViewModel()) {
     val scope = rememberCoroutineScope()
-
-    val budgetStore = remember { BudgetDataStore(context) }
-
     var selectedRange by remember { mutableStateOf("Week") }
     val filterOptions = listOf("Week", "Month", "Year", "All")
-
-    var weeklyInput by remember { mutableStateOf("") }
-    var monthlyInput by remember { mutableStateOf("") }
-    var yearlyInput by remember { mutableStateOf("") }
-
-    val weeklyBudget by budgetStore.weeklyBudget.collectAsState(initial = 0.0)
-    val monthlyBudget by budgetStore.monthlyBudget.collectAsState(initial = 0.0)
-    val yearlyBudget by budgetStore.yearlyBudget.collectAsState(initial = 0.0)
-
-    val allTransactions by dao.getAllTransactions().collectAsState(initial = emptyList())
-
     var currentView by remember { mutableStateOf(ViewMode.Table) }
+
+    val weeklyInput by remember { mutableStateOf("") }
+    val monthlyInput by remember { mutableStateOf("") }
+    val yearlyInput by remember { mutableStateOf("") }
+
+    val allTransactions by viewModel.allTransactions.collectAsState(initial = emptyList())
+    val weeklyBudget by viewModel.weeklyBudget.collectAsState(initial = 0.0)
+    val monthlyBudget by viewModel.monthlyBudget.collectAsState(initial = 0.0)
+    val yearlyBudget by viewModel.yearlyBudget.collectAsState(initial = 0.0)
 
     val filteredTransactions = remember(allTransactions, selectedRange) {
         val now = LocalDate.now()
@@ -72,26 +68,23 @@ fun BudgetScreen(navController: NavController) {
 
     Scaffold(
         topBar = {
-            @OptIn(ExperimentalMaterial3Api::class) // 显式启用实验性 API
             TopAppBar(title = { Text("Budget Overview", style = MaterialTheme.typography.titleLarge) })
         },
         bottomBar = { BottomBackBar(navController) }
     ) { padding ->
-        Column(
-            modifier = Modifier
-                .padding(padding)
-                .padding(16.dp)
-        ) {
+        Column(modifier = Modifier.padding(padding).padding(16.dp)) {
             Text("Set Budget:")
-            OutlinedTextField(value = weeklyInput, onValueChange = { weeklyInput = it }, label = { Text("Weekly Budget") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(value = monthlyInput, onValueChange = { monthlyInput = it }, label = { Text("Monthly Budget") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(value = yearlyInput, onValueChange = { yearlyInput = it }, label = { Text("Yearly Budget") }, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(value = weeklyInput, onValueChange = {}, label = { Text("Weekly Budget") }, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(value = monthlyInput, onValueChange = {}, label = { Text("Monthly Budget") }, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(value = yearlyInput, onValueChange = {}, label = { Text("Yearly Budget") }, modifier = Modifier.fillMaxWidth())
 
             Button(onClick = {
                 scope.launch {
-                    weeklyInput.toDoubleOrNull()?.let { budgetStore.saveWeeklyBudget(it) }
-                    monthlyInput.toDoubleOrNull()?.let { budgetStore.saveMonthlyBudget(it) }
-                    yearlyInput.toDoubleOrNull()?.let { budgetStore.saveYearlyBudget(it) }
+                    viewModel.saveBudget(
+                        weeklyInput.toDoubleOrNull() ?: 0.0,
+                        monthlyInput.toDoubleOrNull() ?: 0.0,
+                        yearlyInput.toDoubleOrNull() ?: 0.0
+                    )
                 }
             }, modifier = Modifier.padding(vertical = 8.dp)) {
                 Text("Save Budget")
@@ -132,21 +125,25 @@ fun BudgetScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(16.dp))
             when (currentView) {
                 ViewMode.Table -> {
-                    LazyColumn {
-                        items(filteredTransactions) { tx ->
-                            val date = "%04d-%02d-%02d".format(tx.year, tx.month, tx.day)
-                            Card(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 4.dp),
-                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-                                shape = MaterialTheme.shapes.medium
-                            ) {
-                                Column(modifier = Modifier.padding(16.dp)) {
-                                    Text("Date: $date", style = MaterialTheme.typography.bodyMedium)
-                                    Text("Type: ${tx.type}", style = MaterialTheme.typography.bodyMedium)
-                                    Text("Amount: \$${tx.amount}", style = MaterialTheme.typography.bodyMedium)
-                                    Text("Reason: ${tx.reason}", style = MaterialTheme.typography.bodyMedium)
+                    if (filteredTransactions.isEmpty()) {
+                        Text("No transactions available.")
+                    } else {
+                        LazyColumn {
+                            items(filteredTransactions) { tx ->
+                                val date = "%04d-%02d-%02d".format(tx.year, tx.month, tx.day)
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 4.dp),
+                                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                                    shape = MaterialTheme.shapes.medium
+                                ) {
+                                    Column(modifier = Modifier.padding(16.dp)) {
+                                        Text("Date: $date")
+                                        Text("Type: ${tx.type}")
+                                        Text("Amount: \$${tx.amount}")
+                                        Text("Reason: ${tx.reason}")
+                                    }
                                 }
                             }
                         }

@@ -52,12 +52,12 @@ fun RemindersScreen(navController: NavController) {
     val displayText = when (frequency) {
         "Weekly" -> {
             val next = selectedDate.with(selectedDate.dayOfWeek).plusWeeks(1)
-            val daysUntil = ChronoUnit.DAYS.between(today, next).toInt()
-            "距离下次账单（${selectedDate.dayOfWeek}）还有 $daysUntil 天"
+            val daysUntil = ChronoUnit.DAYS.between(today, next).toInt()-7
+            "$daysUntil days left until next bill(${selectedDate.dayOfWeek}）"
         }
         "Monthly" -> {
             val nextMonth = selectedDate.plusMonths(1)
-            "下次账单日期为：${nextMonth.format(formatter)}"
+            "Next billing date is：${nextMonth.format(formatter)}"
         }
         else -> ""
     }

@@ -7,6 +7,7 @@ import com.example.assessment2.database.FinanceDatabase
 import com.example.assessment2.database.GoalDao
 import com.example.assessment2.database.ReminderDao
 import com.example.assessment2.database.TransactionDao
+import com.example.assessment2.datastore.BudgetDataStore
 import com.example.assessment2.datastore.SettingsDataStore
 import com.example.assessment2.repository.GoalRepository
 import dagger.Module
@@ -55,6 +56,13 @@ object AppModule {
     ): GoalRepository {
         return GoalRepository(goalDao, transactionDao)
     }
+
+    @Provides
+    @Singleton
+    fun provideBudgetDataStore(@ApplicationContext context: Context): BudgetDataStore {
+        return BudgetDataStore(context)
+    }
+
     @Provides
     @Singleton
     fun provideExchangeRateApi(): ExchangeRateApi {
