@@ -34,9 +34,9 @@ fun BudgetScreen(navController: NavController, viewModel: BudgetViewModel = hilt
     val filterOptions = listOf("Week", "Month", "Year", "All")
     var currentView by remember { mutableStateOf(ViewMode.Table) }
 
-    val weeklyInput by remember { mutableStateOf("") }
-    val monthlyInput by remember { mutableStateOf("") }
-    val yearlyInput by remember { mutableStateOf("") }
+    var weeklyInput by remember { mutableStateOf("") }
+    var monthlyInput by remember { mutableStateOf("") }
+    var yearlyInput by remember { mutableStateOf("") }
 
     val allTransactions by viewModel.allTransactions.collectAsState(initial = emptyList())
     val weeklyBudget by viewModel.weeklyBudget.collectAsState(initial = 0.0)
@@ -74,10 +74,26 @@ fun BudgetScreen(navController: NavController, viewModel: BudgetViewModel = hilt
     ) { padding ->
         Column(modifier = Modifier.padding(padding).padding(16.dp)) {
             Text("Set Budget:")
-            OutlinedTextField(value = weeklyInput, onValueChange = {}, label = { Text("Weekly Budget") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(value = monthlyInput, onValueChange = {}, label = { Text("Monthly Budget") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(value = yearlyInput, onValueChange = {}, label = { Text("Yearly Budget") }, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(
+                value = weeklyInput,
+                onValueChange = { weeklyInput = it },
+                label = { Text("Weekly Budget") },
+                modifier = Modifier.fillMaxWidth()
+            )
 
+            OutlinedTextField(
+                value = monthlyInput,
+                onValueChange = { monthlyInput = it },
+                label = { Text("Monthly Budget") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            OutlinedTextField(
+                value = yearlyInput,
+                onValueChange = { yearlyInput = it },
+                label = { Text("Yearly Budget") },
+                modifier = Modifier.fillMaxWidth()
+            )
             Button(onClick = {
                 scope.launch {
                     viewModel.saveBudget(
