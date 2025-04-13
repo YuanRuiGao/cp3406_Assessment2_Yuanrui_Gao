@@ -1,0 +1,48 @@
+## Finance Dashboard Financial Health Management App
+
+    An Android app built on **Kotlin + Jetpack Compose**, which helps users record financial information, set budgets and goals, bill due reminders, and provides exchange rate query functions.
+
+## Overview of core functions
+
+    - **Income and expenditure records**: Record daily income and expenditure, support classification, filtering and local database storage.
+
+    - **Budget management**: Support setting weekly/monthly/yearly budgets, automatically compare with income and expenditure, and highlight overages.
+
+    - **Savings goals**: Set target amounts and dates, and display completion status.
+
+    - **Bill reminder**: Remind of due dates by month/week, and display the remaining days.
+
+    - **Exchange rate query**: Display the current exchange rate according to needs.
+
+    - **Financial suggestions**: Provide certain suggestions based on user habits.
+
+    - **Settings**: Switch font size and background color, and use DataStore for persistence.
+
+## Technology stack
+
+    - Kotlin + Jetpack Compose
+    - Room (local database)
+    - Hilt (dependency injection)
+    - StateFlow + ViewModel
+    - Retrofit (Exchange rate API)
+    - DataStore (settings saving)
+
+## Test coverage
+
+    Use `JUnit` + `Mockito` + `kotlinx-coroutines-test` to implement core ViewModel layer testing.
+
+## Project structure
+
+    - `api/`: API interface
+    - `database/`: Room related
+    - `viewmodel/`: business logic
+    - `ui/`: Compose page
+    - `di/`: dependency injection configuration
+
+## Core functional tests of the ViewModel layer have been covered, including:
+
+    - `MedicationViewModelTest`
+    - `ReminderViewModelTest`
+    - `SuggestViewModelTest`
+    - `SettingsViewModelTest`
+    - `RoutineTaskViewModelTest
