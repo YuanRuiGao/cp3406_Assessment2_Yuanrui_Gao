@@ -2,6 +2,7 @@ package com.example.assessment2.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.assessment2.api.ExchangeRateApi
 import com.example.assessment2.database.FinanceDatabase
 import com.example.assessment2.database.GoalDao
 import com.example.assessment2.database.ReminderDao
@@ -13,6 +14,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -52,4 +55,15 @@ object AppModule {
     ): GoalRepository {
         return GoalRepository(goalDao, transactionDao)
     }
+    @Provides
+    @Singleton
+    fun provideExchangeRateApi(): ExchangeRateApi {
+        return Retrofit.Builder()
+            .baseUrl("https://api.exchangerate.host/")  // 你的汇率 API 地址
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ExchangeRateApi::class.java)
+    }
 }
+
+

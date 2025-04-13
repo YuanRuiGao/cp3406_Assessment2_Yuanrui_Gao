@@ -9,7 +9,7 @@ import androidx.navigation.NavController
 import com.example.assessment2.components.BottomBackBar
 import com.example.assessment2.components.DropdownMenuSetting
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.assessment2.viewmodel.settings.SettingsViewModel
+import com.example.assessment2.viewmodel.setting.SettingsViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)

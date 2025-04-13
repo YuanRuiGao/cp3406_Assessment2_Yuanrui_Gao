@@ -1,4 +1,4 @@
-package com.example.assessment2.viewmodel.settings
+package com.example.assessment2.viewmodel.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
